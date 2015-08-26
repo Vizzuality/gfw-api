@@ -60,7 +60,7 @@ GET_STORY = r'/stories/<id:\d+>'
 
 # Indicators API routes
 LIST_INDICATORS = r'/indicators'
-GET_INDICATOR_FOR_COUNTRY = r'/countries/<iso:[A-z]{3,3}>/indicators/<id:\d+>'
+GET_INDICATOR = r'/indicators/<id:\d+>'
 
 class SubHandler(webapp2.RequestHandler):
 
@@ -325,7 +325,7 @@ class IndicatorApi(BaseApi):
             self._send_response(json.dumps(result))
         except Exception, e:
             name = e.__class__.__name__
-            msg = 'Error: Story API (%s)' % name
+            msg = 'Error: Indicator API (%s)' % name
             monitor.log(self.request.url, msg, error=e,
                         headers=self.request.headers)
 
@@ -369,7 +369,7 @@ routes = [
                   methods=['POST']),
     webapp2.Route(LIST_INDICATORS, handler=IndicatorApi,
                   handler_method='list'),
-    webapp2.Route(GET_INDICATOR_FOR_COUNTRY, handler=IndicatorApi,
+    webapp2.Route(GET_INDICATOR, handler=IndicatorApi,
                   handler_method='get')
 ]
 
