@@ -303,7 +303,7 @@ class IndicatorsApi(BaseApi):
             rid = self._get_id(params)
             entry = Entry.get_by_id(rid)
             if not entry or params.get('bust') or runtime_config.get('IS_DEV'):
-                result = countries.get(params)
+                result = indicators.get(params)
                 if result:
                     entry = Entry(id=rid, value=json.dumps(result))
                     entry.put()
@@ -325,7 +325,7 @@ class IndicatorsApi(BaseApi):
             self._send_response(json.dumps(result))
         except Exception, e:
             name = e.__class__.__name__
-            msg = 'Error: Story API (%s)' % name
+            msg = 'Error: Indicators API (%s)' % name
             monitor.log(self.request.url, msg, error=e,
                         headers=self.request.headers)
 
