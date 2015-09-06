@@ -85,7 +85,7 @@ handlers:
   script: gfw.stories.handlers
 
 - url: /indicators.*
-  script: gfw.indicators.handlers
+  script: gfw.indicators.api.handlers
 
 # PubSub
 - url: /.*

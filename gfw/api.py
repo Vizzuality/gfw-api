@@ -60,7 +60,7 @@ GET_STORY = r'/stories/<id:\d+>'
 
 # Indicators API routes
 LIST_INDICATORS = r'/indicators'
-GET_INDICATOR_FOR_COUNTRY = r'/countries/<iso:[A-z]{3,3}>/indicators/<id:\d+>'
+GET_INDICATOR_FOR_COUNTRY = r'/indicators/<id:\d+>'
 
 class SubHandler(webapp2.RequestHandler):
 
@@ -294,7 +294,7 @@ class PubSubApi(BaseApi):
                         headers=self.request.headers)
             self._send_error()
 
-class IndicatorApi(BaseApi):
+class IndicatorsApi(BaseApi):
     """Handler for indicators."""
 
     def get(self):
@@ -367,9 +367,9 @@ routes = [
     webapp2.Route(r'/publish', handler=PubSubApi,
                   handler_method='publish',
                   methods=['POST']),
-    webapp2.Route(LIST_INDICATORS, handler=IndicatorApi,
+    webapp2.Route(LIST_INDICATORS, handler=IndicatorsApi,
                   handler_method='list'),
-    webapp2.Route(GET_INDICATOR_FOR_COUNTRY, handler=IndicatorApi,
+    webapp2.Route(GET_INDICATOR_FOR_COUNTRY, handler=IndicatorsApi,
                   handler_method='get')
 ]
 
