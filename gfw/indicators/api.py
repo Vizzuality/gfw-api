@@ -45,7 +45,7 @@ def _classify_request(path):
     if re.match(r'^indicators$', path):
         return 'index'
     elif re.match(r'^indicators/\d+$', path):
-        return 'id1'
+        return 'show'
 
 
 class Handler(CORSRequestHandler):

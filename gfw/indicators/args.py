@@ -39,24 +39,24 @@ class IsoArgError(ArgError):
         super(IsoArgError, self).__init__(msg)
 
 
-class Id1ArgError(ArgError):
-    USAGE = """id1 must be an integer."""
+class IdArgError(ArgError):
+    USAGE = """id must be an integer."""
 
     def __init__(self):
-        msg = 'Invalid id1 parameter! Usage: %s' % self.UseArgError
-        super(Id1ArgError, self).__init__(msg)
+        msg = 'Invalid id parameter! Usage: %s' % self.UseArgError
+        super(IdArgError, self).__init__(msg)
 
 
 class PathProcessor():
 
     @classmethod
-    def id1(cls, path):
+    def id(cls, path):
         try:
-            arg = dict(id1=path.split('/')[2])
+            arg = dict(id=path.split('/')[2])
             arg.update(cls.iso(path))
             return arg
         except:
-            raise Exception('Unable to process id1 from request path')
+            raise Exception('Unable to process id from request path')
 
     @classmethod
     def process(cls, path, params):
