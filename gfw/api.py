@@ -60,7 +60,7 @@ GET_STORY = r'/stories/<id:\d+>'
 
 # Indicators API routes
 LIST_INDICATORS = r'/indicators'
-GET_INDICATOR = r'/indicators/<id:\d+>'
+GET_INDICATOR_FOR_COUNTRY = r'/indicators/<id:\d+>'
 
 class SubHandler(webapp2.RequestHandler):
 
@@ -294,7 +294,7 @@ class PubSubApi(BaseApi):
                         headers=self.request.headers)
             self._send_error()
 
-class IndicatorApi(BaseApi):
+class IndicatorsApi(BaseApi):
     """Handler for indicators."""
 
     def get(self):
@@ -303,7 +303,7 @@ class IndicatorApi(BaseApi):
             rid = self._get_id(params)
             entry = Entry.get_by_id(rid)
             if not entry or params.get('bust') or runtime_config.get('IS_DEV'):
-                result = countries.get(params)
+                result = indicators.get(params)
                 if result:
                     entry = Entry(id=rid, value=json.dumps(result))
                     entry.put()
@@ -325,7 +325,7 @@ class IndicatorApi(BaseApi):
             self._send_response(json.dumps(result))
         except Exception, e:
             name = e.__class__.__name__
-            msg = 'Error: Indicator API (%s)' % name
+            msg = 'Error: Indicators API (%s)' % name
             monitor.log(self.request.url, msg, error=e,
                         headers=self.request.headers)
 
@@ -367,9 +367,9 @@ routes = [
     webapp2.Route(r'/publish', handler=PubSubApi,
                   handler_method='publish',
                   methods=['POST']),
-    webapp2.Route(LIST_INDICATORS, handler=IndicatorApi,
+    webapp2.Route(LIST_INDICATORS, handler=IndicatorsApi,
                   handler_method='list'),
-    webapp2.Route(GET_INDICATOR, handler=IndicatorApi,
+    webapp2.Route(GET_INDICATOR_FOR_COUNTRY, handler=IndicatorsApi,
                   handler_method='get')
 ]
 

@@ -25,9 +25,10 @@ from gfw import cdb
 class IndicatorSql(object):
 
     INDEX = """
-        SELECT *
+        SELECT indicator_group, description, indicator_id,
+        value_units
         FROM indicators
-        LIMIT 20
+        GROUP BY indicator_id, indicator_group, description, value_units
     """
 
     SHOW = """
@@ -52,14 +53,12 @@ def _handler(response):
 def _index(args):
     if not 'order' in args:
         args['order'] = ''
-    if not 'interval' in args:
-        args['interval'] = '12 Months'
-    query = CountrySql.INDEX.format(**args)
+    query = IndicatorSql.INDEX.format(**args)
     rows = _handler(cdb.execute(query))
-    return dict(countries=rows)
+    return dict(indicators=rows)
 
 def _show(args):
-    query = CountrySql.SHOW.format(**args)
+    query = IndicatorSql.SHOW.format(**args)
     rows = _handler(cdb.execute(query))
     return rows[0]
 

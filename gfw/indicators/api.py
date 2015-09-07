@@ -27,10 +27,16 @@ from gfw.indicators import args
 from gfw.common import CORSRequestHandler
 from gfw.common import APP_BASE_URL
 
-INDICATORS_API = '%s/' % APP_BASE_URL
+INDICATORS_API = '%s/indicators' % APP_BASE_URL
 
 META = {
-
+    'indicators': {
+        'meta': {
+            'description': 'Indicators for countries'
+        },
+        'apis': {
+        }
+    }
 }
 
 
@@ -38,14 +44,12 @@ def _classify_request(path):
     """Classify request based on supplied path."""
     if re.match(r'^indicators$', path):
         return 'index'
-    elif re.match(r'^countries/[A-z]{3,3}$', path):
-        return 'iso'
-    elif re.match(r'^countries/[A-z]{3,3}/\d+$', path):
+    elif re.match(r'^indicators/\d+$', path):
         return 'id1'
 
 
 class Handler(CORSRequestHandler):
-    """API handler for countries."""
+    """API handler for indicators."""
 
     def post(self):
         self.get()
@@ -61,9 +65,9 @@ class Handler(CORSRequestHandler):
                 return
 
             # Return API meta
-            if path == 'countries':
+            if path == 'indicators':
                 action, data = self._action_data()
-            else:   
+            else:
                 path_args = args.process_path(path, rtype)
                 action, data = self._action_data(path_args)
 
@@ -76,10 +80,10 @@ class Handler(CORSRequestHandler):
 
 
     def _action_data(self,path_args={'index': True}):
-        query_args = args.process(self.args(only=['dev', 'bust', 'thresh']))
+        query_args = args.process(self.args(only=['dev', 'bust', 'iso']))
         params = dict(query_args, **path_args)
         rid = self.get_id(params)
-        return self.get_or_execute(params, countries, rid)
+        return self.get_or_execute(params, indicators, rid)
 
 
-handlers = webapp2.WSGIApplication([(r'/countries.*', Handler)], debug=True)
+handlers = webapp2.WSGIApplication([(r'/indicators.*', Handler)], debug=True)
