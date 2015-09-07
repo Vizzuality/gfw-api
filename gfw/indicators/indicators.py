@@ -25,9 +25,10 @@ from gfw import cdb
 class IndicatorSql(object):
 
     INDEX = """
-        SELECT *
+        SELECT indicator_group, description, indicator_id,
+        value_units
         FROM indicators
-        LIMIT 20
+        GROUP BY indicator_id, indicator_group, description, value_units
     """
 
     SHOW = """
