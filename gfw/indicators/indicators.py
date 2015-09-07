@@ -33,7 +33,7 @@ class IndicatorSql(object):
 
     SHOW = """
         SELECT *
-        FROM indicators
+        FROM indicators_values
         WHERE indicator_id = {id}
         LIMIT 1
     """
